@@ -50,7 +50,7 @@ with st.form("my_form"):
                 # Check if url is valid
                 if validators.url(text_input):
                     try:
-                        if requests.head(text_input, timeout=5).status_code == 200:
+                        if requests.get(text_input, timeout=5).status_code == 200:
                             print(f'text_input : {text_input}')
                             fetched_data = langchain_rag.fetch_company_data(text_input)
                             values = ", ".join(f"'{value}'" for value in fetched_data.values())
