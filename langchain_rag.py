@@ -76,6 +76,13 @@ def check_if_url_is_reachable(url):
 def remove_unreachable_urls(url_list):
         return [link for link in url_list if check_if_url_is_reachable(link)]
 
+def remove_long_fields(data):
+    for key in data.keys():
+        if len(data[key]) > 30:
+            data[key] = 'NA' 
+
+    return data
+
 def fetch_company_data(input_url):
     input_depth = 2
     max_links = 4
@@ -131,6 +138,8 @@ def fetch_company_data(input_url):
             'investors_name' : investors_name,
             'founders_name' : founders_name,
             'founding_year' : founding_year}
+
+    data = remove_long_fields(data)
 
     return data
 
