@@ -1,0 +1,10 @@
+streamlit
+streamlit-card
+psycopg2-binary
+sqlalchemy
+langchain
+openai
+chromadb
+langchainhub
+bs4
+tiktoken
