@@ -7,10 +7,6 @@ import langchain_rag
 import time
 import validators
 import requests
-import logging
-
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 # Initialize connection.
 conn = st.connection("postgresql", type="sql")
@@ -55,7 +51,7 @@ with st.form("my_form"):
                 if validators.url(text_input):
                     try:
                         if requests.head(text_input, timeout=5).status_code == 200:
-                            logger.info(f'text_input : {text_input}')
+                            print(f'text_input : {text_input}')
                             fetched_data = langchain_rag.fetch_company_data(text_input)
                             values = ", ".join(f"'{value}'" for value in fetched_data.values())
                             result = f'({values})'
