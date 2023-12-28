@@ -4,6 +4,13 @@ from streamlit_card import card
 import psycopg2
 import postgres_functions
 import langchain_rag
+import time
+import validators
+import requests
+import logging
+
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # Initialize connection.
 conn = st.connection("postgresql", type="sql")
@@ -31,22 +38,38 @@ option = st.selectbox(
    placeholder="Select company...",
 )
 
-text_input = st.text_input(
-        "Not finding what you're looking for? Submit a new company here!",
-        placeholder='Enter company website link',
-        key = 'text_input'
-    )
 
-if text_input:
-    fetched_data = langchain_rag.fetch_company_data(text_input)
-    values = ", ".join(f"'{value}'" for value in fetched_data.values())
-    result = f'({values})'
+with st.form("my_form"):
+    text_input = st.text_input(
+                        "Not finding what you're looking for? Submit a new company here!",
+                        placeholder='Enter company website link',
+                        key = 'text_input'
+                    )
 
-    sql = f"""INSERT INTO company_information VALUES {result}"""
+    # Every form must have a submit button.
+    submitted = st.form_submit_button("Submit")
+    if submitted:
+        if text_input:
+            with st.spinner("Processing..."):
+                # Check if url is valid
+                if validators.url(text_input):
+                    try:
+                        if requests.head(text_input, timeout=5).status_code == 200:
+                            logger.info(f'text_input : {text_input}')
+                            fetched_data = langchain_rag.fetch_company_data(text_input)
+                            values = ", ".join(f"'{value}'" for value in fetched_data.values())
+                            result = f'({values})'
 
-    postgres_functions.execute_query(sql)
-    del st.session_state['text_input']
-    st.rerun()
+                            sql = f"""INSERT INTO company_information VALUES {result}"""
+
+                            postgres_functions.execute_query(sql)
+                            st.success("Process completed!")
+                        else:
+                            st.error("The website is not reachable.")
+                    except:
+                        st.error("Error reaching the website.")
+                else:
+                    st.error("The URL is not valid.")
 
 data = data[data['company_name'] == option].reset_index(drop=True)
 
