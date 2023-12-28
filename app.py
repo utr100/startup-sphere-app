@@ -49,21 +49,15 @@ with st.form("my_form"):
             with st.spinner("Processing..."):
                 # Check if url is valid
                 if validators.url(text_input):
-                    try:
-                        if requests.get(text_input, timeout=5).status_code == 200:
-                            print(f'text_input : {text_input}')
-                            fetched_data = langchain_rag.fetch_company_data(text_input)
-                            values = ", ".join(f"'{value}'" for value in fetched_data.values())
-                            result = f'({values})'
+                    print(f'text_input : {text_input}')
+                    fetched_data = langchain_rag.fetch_company_data(text_input)
+                    values = ", ".join(f"'{value}'" for value in fetched_data.values())
+                    result = f'({values})'
 
-                            sql = f"""INSERT INTO company_information VALUES {result}"""
+                    sql = f"""INSERT INTO company_information VALUES {result}"""
 
-                            postgres_functions.execute_query(sql)
-                            st.success("Process completed!")
-                        else:
-                            st.error("The website is not reachable.")
-                    except:
-                        st.error("Error reaching the website.")
+                    postgres_functions.execute_query(sql)
+                    st.success("Process completed!")
                 else:
                     st.error("The URL is not valid.")
 
