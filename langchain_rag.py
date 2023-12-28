@@ -38,7 +38,7 @@ def build_rag_chain(urls, debug = False):
     retriever = vectorstore.as_retriever()
 
     prompt = hub.pull("rlm/rag-prompt")
-    llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0)
+    llm = ChatOpenAI(model_name="gpt-4", temperature=0)
 
 
     def format_docs(docs):
@@ -136,4 +136,4 @@ def fetch_company_data(input_url):
 
 
 if __name__ == '__main__':
-    print(fetch_company_data('https://yellow.ai/'))
+    print(fetch_company_data('https://www.ripplr.in/'))
