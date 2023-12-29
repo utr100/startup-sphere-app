@@ -81,7 +81,7 @@ def remove_unreachable_urls(url_list):
 
 def remove_long_fields(data):
     for key in data.keys():
-        if len(data[key]) > 30:
+        if len(data[key]) > 80:
             data[key] = 'NA' 
 
     return data
