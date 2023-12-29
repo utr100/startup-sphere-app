@@ -88,8 +88,9 @@ def remove_long_fields(data):
 
 def fetch_company_data(logger, input_url):
     input_depth = 2
-    max_links = 4
+    max_links = 7
     all_links = fetch_links.get_all_links_in_domain(input_url, input_depth, max_links=max_links)
+    # all_links = all_links.append(input_url)
     all_links = remove_urls_with_missing_schema(all_links)
     all_links = remove_unreachable_urls(all_links)
     all_links = list(set(all_links))

@@ -6,11 +6,7 @@ def get_domain(url):
     # Extract the domain from a given URL
     return urlparse(url).netloc
 
-def get_all_links_in_domain(url, depth, current_depth=0, visited=set(), base_domain=None, max_links=None):
-    # Check if the URL has already been visited or if the maximum depth is reached
-    if url in visited or current_depth > depth:
-        return []
-
+def get_all_links_in_domain(url, visited=set(), base_domain=None, max_links=None):
     try:
         # Fetch the HTML content of the webpage
         response = requests.get(url)
@@ -25,9 +21,6 @@ def get_all_links_in_domain(url, depth, current_depth=0, visited=set(), base_dom
         # Convert relative URLs to absolute URLs
         links = [urljoin(url, link) for link in links]
 
-        # Mark the current URL as visited
-        visited.add(url)
-
         # Extract the base domain if not provided
         if base_domain is None:
             base_domain = get_domain(url)
@@ -38,10 +31,6 @@ def get_all_links_in_domain(url, depth, current_depth=0, visited=set(), base_dom
         # Limit the number of links returned
         if max_links is not None:
             links = links[:max_links]
-
-        # Recursively collect links from linked pages with increased depth
-        for link in links:
-            links.extend(get_all_links_in_domain(link, depth, current_depth + 1, visited, base_domain, max_links))
 
         return links
 
