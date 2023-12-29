@@ -71,6 +71,8 @@ with st.form("my_form"):
                     st.error("The URL is not valid.")
 
 data = data[data['company_name'] == option].reset_index(drop=True)
+data = data.sort_values(by = 'record_timestamp', ascending = False)
+data = data.drop('record_timestamp', axis = 1)
 
 if data.shape[0] > 0:
     for i, column in enumerate(data.columns):

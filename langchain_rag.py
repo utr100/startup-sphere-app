@@ -20,6 +20,7 @@ import fetch_links
 from urllib.parse import urlsplit
 import requests
 requests.adapters.DEFAULT_RETRIES = 0
+from datetime import datetime
 
 
 def build_rag_chain(urls, debug = False):
@@ -81,8 +82,11 @@ def remove_unreachable_urls(url_list):
 
 def remove_long_fields(data):
     for key in data.keys():
-        if len(data[key]) > 80:
-            data[key] = 'NA' 
+        try:
+            if len(data[key]) > 80:
+                data[key] = 'NA' 
+        except TypeError:
+            pass
 
     return data
 
@@ -157,7 +161,8 @@ def fetch_company_data(logger, input_url):
             'number_of_investors' : number_of_investors,
             'investors_name' : investors_name,
             'founders_name' : founders_name,
-            'founding_year' : founding_year}
+            'founding_year' : founding_year,
+            'record_timestamp' : datetime.now()}
 
     data = remove_long_fields(data)
 
