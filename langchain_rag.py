@@ -111,30 +111,37 @@ def fetch_company_data(logger, input_url):
     search_term = f'{company_name} location'
     question = 'Which city is the company located in according to the data?'
     company_location = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'company_location : {company_location}')
 
     search_term = f'{company_name} number of employees'
     question = 'How many employees does the company have according to the data?'
     number_of_employees = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'number_of_employees : {number_of_employees}')
 
     search_term = f'{company_name} total funding'
     question = 'What is the total funding of the company according to the data?'
     total_funding = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'total_funding : {total_funding}')
 
     search_term = f'{company_name} number of investors'
     question = 'How many inverstors does the company have according to the data?'
     number_of_investors = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'number_of_investors : {number_of_investors}')
 
     search_term = f'{company_name} names of investors'
     question = 'What are the names of the inverstors according to the data?'
     investors_name = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'investors_name : {investors_name}')
 
     search_term = f'{company_name} founding year'
     question = 'When was the company founded according to the data?'
     founding_year = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'founding_year : {founding_year}')
 
     search_term = f'{company_name} founders name'
     question = 'What are the names of the company founders according to the data?'
     founders_name = extract_data(search_term, prompt_template.format(question))
+    logger.info(f'founders_name : {founders_name}')
 
     data = {'company_name' : company_name,
             'company_location' : company_location,
