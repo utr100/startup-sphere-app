@@ -1,6 +1,7 @@
 streamlit
 streamlit-card
 psycopg2-binary
+pysqlite3-binary
 sqlalchemy
 langchain
 openai
