@@ -14,6 +14,10 @@ import time
 import validators
 import requests
 
+from streamlit.logger import get_logger
+logger = get_logger(__name__)
+logger.info('Hello world')
+
 # Initialize connection.
 conn = st.connection("postgresql", type="sql")
 
