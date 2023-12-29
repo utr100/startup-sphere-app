@@ -29,7 +29,7 @@ def build_rag_chain(urls, debug = False):
     docs = loader.load()
 
     if debug==True:
-        print(docs)
+        logger.info(docs)
 
     text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
     splits = text_splitter.split_documents(docs)
@@ -86,7 +86,7 @@ def remove_long_fields(data):
 
     return data
 
-def fetch_company_data(input_url):
+def fetch_company_data(logger, input_url):
     input_depth = 2
     max_links = 4
     all_links = fetch_links.get_all_links_in_domain(input_url, input_depth, max_links=max_links)
@@ -94,7 +94,7 @@ def fetch_company_data(input_url):
     all_links = remove_unreachable_urls(all_links)
     all_links = list(set(all_links))
 
-    print(f'all_links : {all_links}')
+    logger.info(f'all_links : {all_links}')
     rag_chain = build_rag_chain(all_links)
 
     question = '''What is the brand name of the company (not the registered name) 
@@ -103,7 +103,7 @@ def fetch_company_data(input_url):
 
     company_name = rag_chain.invoke(question)
 
-    print(f'company_name : {company_name}')
+    logger.info(f'company_name : {company_name}')
 
     prompt_template = '''{} Write only the answer and nothing else. If you don't
                          know the answer write NA'''

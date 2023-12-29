@@ -16,7 +16,6 @@ import requests
 
 from streamlit.logger import get_logger
 logger = get_logger(__name__)
-logger.info('Hello world')
 
 # Initialize connection.
 conn = st.connection("postgresql", type="sql")
@@ -59,8 +58,8 @@ with st.form("my_form"):
             with st.spinner("Processing..."):
                 # Check if url is valid
                 if validators.url(text_input):
-                    print(f'text_input : {text_input}')
-                    fetched_data = langchain_rag.fetch_company_data(text_input)
+                    logger.info(f'text_input : {text_input}')
+                    fetched_data = langchain_rag.fetch_company_data(logger, text_input)
                     values = ", ".join(f"'{value}'" for value in fetched_data.values())
                     result = f'({values})'
 
