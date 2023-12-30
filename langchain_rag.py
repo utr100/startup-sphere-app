@@ -102,9 +102,8 @@ def fetch_company_data(logger, input_url):
     logger.info(f'all_links : {all_links}')
     rag_chain = build_rag_chain(all_links)
 
-    question = '''What is the brand name of the company (not the registered name) 
-                  according to the website? Just write the name and do now write 
-                  anything else'''
+    question = '''What is the name of the company according to the website? Just 
+                  write the name and do now write anything else'''
 
     company_name = rag_chain.invoke(question)
 
