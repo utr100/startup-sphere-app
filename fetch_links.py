@@ -38,11 +38,8 @@ def get_all_links_in_domain(url, visited=set(), base_domain=None, max_links=None
         print(f"Error fetching {url}: {e}")
         return []
 
-def google_search_links(search_term, num_links=10):
+def google_search_links(google_search_url, num_links=10):
     try:
-        # Construct the Google search URL
-        google_search_url = f"https://www.google.com/search?q={search_term}"
-
         # Fetch the HTML content of the search results page
         response = requests.get(google_search_url)
         response.raise_for_status()  # Check for any errors in the HTTP request

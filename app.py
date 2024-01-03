@@ -71,10 +71,12 @@ with st.form("my_form"):
                     st.error("The URL is not valid.")
 
 data = data[data['company_name'] == option].reset_index(drop=True)
-data = data.sort_values(by = 'record_timestamp', ascending = False)
+data = data.sort_values(by = 'record_timestamp', ascending = False).reset_index(drop=True)
 data = data.drop('record_timestamp', axis = 1)
 
 if data.shape[0] > 0:
+    company_name = data['company_name'][0]
+    st.markdown(f"<h2 style='text-align: center;'>{company_name}</h2>", unsafe_allow_html=True)
     for i, column in enumerate(data.columns):
         value = data[column][0]
         column = name_mapper[column]
@@ -92,3 +94,7 @@ if data.shape[0] > 0:
                   title=column,
                   text=value,
                   )
+
+    st.markdown(f"<h2 style='text-align: center;'>News Corner</h2>", unsafe_allow_html=True)
+    news = data['news_corner'][0]
+    st.markdown(f"<p style='text-align: center;'>{news}</p>", unsafe_allow_html=True)

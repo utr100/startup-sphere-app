@@ -55,10 +55,21 @@ def build_rag_chain(urls, debug = False):
 
     return rag_chain
 
-def extract_data(search_term, question):
-    google_search_url = f"https://www.google.com/search?q={search_term}"
-    search_links = fetch_links.google_search_links(search_term, num_links=10)
-    search_links.append(google_search_url)
+def extract_data(search_terms, question, query_type='all'):
+    google_search_urls = []
+    for search_term in search_terms:
+        if query_type == 'all':
+            google_search_url = f"https://www.google.com/search?q={search_term}"
+        elif query_type == 'news':
+            google_search_url = f"https://www.google.com/search?q={search_term}&tbm=nws"
+        google_search_urls.append(google_search_url)
+
+    search_links = []
+
+    for google_search_url in google_search_urls:
+        search_links.extend(fetch_links.google_search_links(google_search_url, num_links=10))
+        search_links.append(google_search_url)
+
     search_links = remove_urls_with_missing_schema(search_links)
     search_links = remove_unreachable_urls(search_links)
     if search_links:
@@ -82,11 +93,13 @@ def remove_unreachable_urls(url_list):
 
 def remove_long_fields(data):
     for key in data.keys():
-        try:
-            if len(data[key]) > 80:
-                data[key] = 'NA' 
-        except TypeError:
-            pass
+        #news corner can be longer
+        if key != 'news_corner':
+            try:
+                if len(data[key]) > 80:
+                    data[key] = 'NA' 
+            except TypeError:
+                pass
 
     return data
 
@@ -111,47 +124,54 @@ def fetch_company_data(logger, input_url):
 
     prompt_template = '''{} If you don't know the answer write NA'''
 
-    search_term = f'{company_name} location'
+    search_term = [f'{company_name} location']
     question = '''Which city is the company located in according to the data?
                   Just write the city and do not write anything else'''
     company_location = extract_data(search_term, prompt_template.format(question))
     logger.info(f'company_location : {company_location}')
 
-    search_term = f'{company_name} number of employees'
+    search_term = [f'{company_name} number of employees']
     question = '''How many employees does the company have according to the data?
                   Just write the number of employees and do not write anything else'''
     number_of_employees = extract_data(search_term, prompt_template.format(question))
     logger.info(f'number_of_employees : {number_of_employees}')
 
-    search_term = f'{company_name} total funding'
+    search_term = [f'{company_name} total funding']
     question = '''What is the total funding of the company according to the data?
                   Just write the funding amount and do not write anything else'''
     total_funding = extract_data(search_term, prompt_template.format(question))
     logger.info(f'total_funding : {total_funding}')
 
-    search_term = f'{company_name} number of investors'
+    search_term = [f'{company_name} number of investors']
     question = '''How many inverstors does the company have according to the data?
                   Just write the total number of investors and do not write anything else'''
     number_of_investors = extract_data(search_term, prompt_template.format(question))
     logger.info(f'number_of_investors : {number_of_investors}')
 
-    search_term = f'{company_name} names of investors'
+    search_term = [f'{company_name} names of investors']
     question = '''What are the names of the inverstors according to the data?
                   Just write the names and do not write anything else'''
     investors_name = extract_data(search_term, prompt_template.format(question))
     logger.info(f'investors_name : {investors_name}')
 
-    search_term = f'{company_name} founding year'
+    search_term = [f'{company_name} founding year']
     question = '''When was the company founded according to the data?
                   Just write the founding year and do not write anything else'''
     founding_year = extract_data(search_term, prompt_template.format(question))
     logger.info(f'founding_year : {founding_year}')
 
-    search_term = f'{company_name} founders name'
+    search_term = [f'{company_name} founders name']
     question = '''What are the names of the company founders according to the data?
                   Just write the founders' name and do not write anything else'''
     founders_name = extract_data(search_term, prompt_template.format(question))
     logger.info(f'founders_name : {founders_name}')
+
+    search_terms = [f'{company_name}', f'{company_name} funding']
+    question = f'''Give me important pieces of information about the company {company_name}. 
+                  Include information such as top new articles about the company, any deals they have done,
+                  details of fund raise etc. Include the full links to the sources in your response'''
+    news_corner = extract_data(search_terms, prompt_template.format(question))
+    logger.info(f'news_corner : {news_corner}')
 
     data = {'company_name' : company_name,
             'company_location' : company_location,
@@ -161,12 +181,17 @@ def fetch_company_data(logger, input_url):
             'investors_name' : investors_name,
             'founders_name' : founders_name,
             'founding_year' : founding_year,
-            'record_timestamp' : datetime.now()}
+            'record_timestamp' : datetime.now(),
+            'news_corner' : news_corner}
 
+    logger.info('removing long fields')
     data = remove_long_fields(data)
 
     return data
 
 
 if __name__ == '__main__':
-    print(fetch_company_data('https://www.ripplr.in/'))
+    question = '''Give me important pieces of information about the company Sarvam AI. 
+                  Include information such as top new articles about the company, any deals they have done,
+                  details of fund raise etc. Include the full links to the sources in your response'''
+    print(extract_data(['Sarvam AI', 'Sarvam AI funding'], question, query_type='news'))
