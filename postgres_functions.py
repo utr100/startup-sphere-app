@@ -1,7 +1,7 @@
 import toml
 import psycopg2
 
-def execute_query(query):
+def execute_query(query, arg_tuple):
     secrets = toml.load('.streamlit/secrets.toml')
 
     postgre_credentials = secrets['connections']['postgresql']
@@ -22,4 +22,4 @@ def execute_query(query):
     conn.autocommit = True
 
     cursor = conn.cursor()
-    cursor.execute(query, tuple)
+    cursor.execute(query, arg_tuple)

@@ -60,12 +60,25 @@ with st.form("my_form"):
                 if validators.url(text_input):
                     logger.info(f'text_input : {text_input}')
                     fetched_data = langchain_rag.fetch_company_data(logger, text_input)
+                    logger.info('data fetch complete')
                     values = ", ".join(f"'{value}'" for value in fetched_data.values())
                     result = f'({values})'
 
-                    sql = f"""INSERT INTO company_information VALUES {result}"""
+                    company_name = fetched_data['company_name']
+                    company_location = fetched_data['company_location']
+                    number_of_employees = fetched_data['number_of_employees']
+                    total_funding = fetched_data['total_funding']
+                    number_of_investors = fetched_data['number_of_investors']
+                    investors_name = fetched_data['investors_name']
+                    founders_name = fetched_data['founders_name']
+                    founding_year = fetched_data['founding_year']
+                    news_corner = fetched_data['news_corner']
+                    record_timestamp = fetched_data['record_timestamp']
 
-                    postgres_functions.execute_query(sql)
+                    sql = """INSERT INTO company_information VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+                    arg_tuple = (company_name, company_location, number_of_employees, total_funding, number_of_investors, investors_name, founders_name, founding_year, news_corner, record_timestamp)
+
+                    postgres_functions.execute_query(sql, arg_tuple)
                     st.success("Process completed!")
                 else:
                     st.error("The URL is not valid.")
@@ -75,6 +88,8 @@ data = data.sort_values(by = 'record_timestamp', ascending = False).reset_index(
 data = data.drop('record_timestamp', axis = 1)
 
 if data.shape[0] > 0:
+    news_corner = data['news_corner'][0]
+    data = data.drop('news_corner', axis = 1)
     company_name = data['company_name'][0]
     st.markdown(f"<h2 style='text-align: center;'>{company_name}</h2>", unsafe_allow_html=True)
     for i, column in enumerate(data.columns):
@@ -96,5 +111,4 @@ if data.shape[0] > 0:
                   )
 
     st.markdown(f"<h2 style='text-align: center;'>News Corner</h2>", unsafe_allow_html=True)
-    news = data['news_corner'][0]
-    st.markdown(f"<p style='text-align: center;'>{news}</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='text-align: center;'>{news_corner}</p>", unsafe_allow_html=True)

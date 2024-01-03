@@ -181,8 +181,8 @@ def fetch_company_data(logger, input_url):
             'investors_name' : investors_name,
             'founders_name' : founders_name,
             'founding_year' : founding_year,
-            'record_timestamp' : datetime.now(),
-            'news_corner' : news_corner}
+            'news_corner' : news_corner,
+            'record_timestamp' : datetime.now(),}
 
     logger.info('removing long fields')
     data = remove_long_fields(data)
