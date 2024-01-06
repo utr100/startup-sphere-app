@@ -135,74 +135,74 @@ def fetch_company_data(logger, input_url):
 
     logger.info(f'company_name : {company_name}')
 
-    prompt_template = '''{} If you don't know the answer write NA'''
+    # prompt_template = '''{} If you don't know the answer write NA'''
 
-    search_term = [f'{company_name} location']
-    question = '''Which city is the company located in according to the data?
-                  Just write the city and do not write anything else'''
-    company_location = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'company_location : {company_location}')
+    # search_term = [f'{company_name} location']
+    # question = '''Which city is the company located in according to the data?
+    #               Just write the city and do not write anything else'''
+    # company_location = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'company_location : {company_location}')
 
-    search_term = [f'{company_name} number of employees']
-    question = '''How many employees does the company have according to the data?
-                  Just write the number of employees and do not write anything else'''
-    number_of_employees = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'number_of_employees : {number_of_employees}')
+    # search_term = [f'{company_name} number of employees']
+    # question = '''How many employees does the company have according to the data?
+    #               Just write the number of employees and do not write anything else'''
+    # number_of_employees = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'number_of_employees : {number_of_employees}')
 
-    search_term = [f'{company_name} total funding']
-    question = '''What is the total funding of the company according to the data?
-                  Just write the funding amount and do not write anything else'''
-    total_funding = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'total_funding : {total_funding}')
+    # search_term = [f'{company_name} total funding']
+    # question = '''What is the total funding of the company according to the data?
+    #               Just write the funding amount and do not write anything else'''
+    # total_funding = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'total_funding : {total_funding}')
 
-    search_term = [f'{company_name} number of investors']
-    question = '''How many inverstors does the company have according to the data?
-                  Just write the total number of investors and do not write anything else'''
-    number_of_investors = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'number_of_investors : {number_of_investors}')
+    # search_term = [f'{company_name} number of investors']
+    # question = '''How many inverstors does the company have according to the data?
+    #               Just write the total number of investors and do not write anything else'''
+    # number_of_investors = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'number_of_investors : {number_of_investors}')
 
-    search_term = [f'{company_name} names of investors']
-    question = '''What are the names of the inverstors according to the data?
-                  Just write the names and do not write anything else'''
-    investors_name = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'investors_name : {investors_name}')
+    # search_term = [f'{company_name} names of investors']
+    # question = '''What are the names of the inverstors according to the data?
+    #               Just write the names and do not write anything else'''
+    # investors_name = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'investors_name : {investors_name}')
 
-    search_term = [f'{company_name} founding year']
-    question = '''When was the company founded according to the data?
-                  Just write the founding year and do not write anything else'''
-    founding_year = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'founding_year : {founding_year}')
+    # search_term = [f'{company_name} founding year']
+    # question = '''When was the company founded according to the data?
+    #               Just write the founding year and do not write anything else'''
+    # founding_year = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'founding_year : {founding_year}')
 
-    search_term = [f'{company_name} founders name']
-    question = '''What are the names of the company founders according to the data?
-                  Just write the founders' name and do not write anything else'''
-    founders_name = extract_data(search_term, prompt_template.format(question))
-    logger.info(f'founders_name : {founders_name}')
+    # search_term = [f'{company_name} founders name']
+    # question = '''What are the names of the company founders according to the data?
+    #               Just write the founders' name and do not write anything else'''
+    # founders_name = extract_data(search_term, prompt_template.format(question))
+    # logger.info(f'founders_name : {founders_name}')
 
-    search_terms = [f'{company_name}', f'{company_name} funding']
-    question = f'''Give me important pieces of information about the company {company_name}. 
-                  Include information such as top new articles about the company, any deals they have done,
-                  details of fund raise etc. Include the full links to the sources in your response. This
-                  response is for a customer facing application. Only write what you know, don\'t say I
-                  don\'t know'''
-    news_corner = extract_data(search_terms, prompt_template.format(question))
-    logger.info(f'news_corner : {news_corner}')
+    # search_terms = [f'{company_name}', f'{company_name} funding']
+    # question = f'''Give me important pieces of information about the company {company_name}. 
+    #               Include information such as top new articles about the company, any deals they have done,
+    #               details of fund raise etc. Include the full links to the sources in your response. This
+    #               response is for a customer facing application. Only write what you know, don\'t say I
+    #               don\'t know'''
+    # news_corner = extract_data(search_terms, prompt_template.format(question))
+    # logger.info(f'news_corner : {news_corner}')
 
-    data = {'company_name' : company_name,
-            'company_location' : company_location,
-            'number_of_employees' : number_of_employees,
-            'total_funding' : total_funding,
-            'number_of_investors' : number_of_investors,
-            'investors_name' : investors_name,
-            'founders_name' : founders_name,
-            'founding_year' : founding_year,
-            'news_corner' : news_corner,
-            'record_timestamp' : datetime.now(),}
+    # data = {'company_name' : company_name,
+    #         'company_location' : company_location,
+    #         'number_of_employees' : number_of_employees,
+    #         'total_funding' : total_funding,
+    #         'number_of_investors' : number_of_investors,
+    #         'investors_name' : investors_name,
+    #         'founders_name' : founders_name,
+    #         'founding_year' : founding_year,
+    #         'news_corner' : news_corner,
+    #         'record_timestamp' : datetime.now(),}
 
-    logger.info('removing long fields')
-    data = remove_long_fields(data)
+    # logger.info('removing long fields')
+    # data = remove_long_fields(data)
 
-    return data
+    # return data
 
 
 if __name__ == '__main__':
