@@ -116,18 +116,11 @@ def remove_long_fields(data):
     return data
 
 def fetch_company_data(logger, input_url):
-    input_depth = 2
-    max_links = 7
-    all_links = fetch_links.get_all_links_in_domain(input_url, input_depth, max_links=max_links)
-    all_links = remove_urls_with_missing_schema(all_links)
-    all_links = remove_unreachable_urls(all_links)
-    all_links = list(set(all_links))
+    rag_chain = build_rag_chain([input_url])
 
-    logger.info(f'all_links : {all_links}')
-    rag_chain = build_rag_chain(all_links)
-
-    question = '''What is the name of the company according to the website? Just 
-                  write the name and do now write anything else'''
+    question = '''This a document about a company website. What is the name of the company written in the 
+                  document? Tell me the name that is most frequently appearing on the website. 
+                  Just write the name and do now write anything else'''
 
     company_name = rag_chain.invoke(question)
 
