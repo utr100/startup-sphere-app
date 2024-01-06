@@ -119,7 +119,6 @@ def fetch_company_data(logger, input_url):
     input_depth = 2
     max_links = 7
     all_links = fetch_links.get_all_links_in_domain(input_url, input_depth, max_links=max_links)
-    # all_links = all_links.append(input_url)
     all_links = remove_urls_with_missing_schema(all_links)
     all_links = remove_unreachable_urls(all_links)
     all_links = list(set(all_links))
@@ -181,7 +180,9 @@ def fetch_company_data(logger, input_url):
     search_terms = [f'{company_name}', f'{company_name} funding']
     question = f'''Give me important pieces of information about the company {company_name}. 
                   Include information such as top new articles about the company, any deals they have done,
-                  details of fund raise etc. Include the full links to the sources in your response'''
+                  details of fund raise etc. Include the full links to the sources in your response. This
+                  response is for a customer facing application. Only write what you know, don\'t say I
+                  don\'t know'''
     news_corner = extract_data(search_terms, prompt_template.format(question))
     logger.info(f'news_corner : {news_corner}')
 
@@ -203,7 +204,9 @@ def fetch_company_data(logger, input_url):
 
 
 if __name__ == '__main__':
-    question = '''Give me important pieces of information about the company Sarvam AI. 
+    question = '''Give me important pieces of information about the company Lithasa Technologies Pvt. Ltd. 
                   Include information such as top new articles about the company, any deals they have done,
-                  details of fund raise etc. Include the full links to the sources in your response'''
-    print(extract_data(['Sarvam AI', 'Sarvam AI funding'], question, query_type='news'))
+                  details of fund raise etc. Include the full links to the sources in your response. This
+                  response is for a customer facing application. Only write what you know, don\'t say I
+                  don\'t know'''
+    print(extract_data(['Lithasa Technologies Pvt. Ltd.', 'Lithasa Technologies Pvt. Ltd. funding'], question, query_type='news'))
