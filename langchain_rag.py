@@ -24,8 +24,20 @@ from datetime import datetime
 
 
 def build_rag_chain(urls, debug = False):
+    header_template = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*"
+        ";q=0.8",
+        "Accept-Language": "en-US,en;q=0.5",
+        "Referer": "https://www.google.com/",
+        "DNT": "1",
+        "Connection": "keep-alive",
+        "Upgrade-Insecure-Requests": "1",
+    }
+
     loader = WebBaseLoader(
-        web_paths=(urls)
+        web_paths=(urls),
+        header_template=header_template
     )
     docs = loader.load()
 
