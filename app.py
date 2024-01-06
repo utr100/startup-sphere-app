@@ -44,7 +44,7 @@ option = st.selectbox(
 )
 
 
-with st.form("my_form"):
+with st.form("my_form", clear_on_submit=True):
     text_input = st.text_input(
                         "Not finding what you're looking for? Submit a new company here!",
                         placeholder='Enter company website link',
@@ -61,24 +61,24 @@ with st.form("my_form"):
                     logger.info(f'text_input : {text_input}')
                     fetched_data = langchain_rag.fetch_company_data(logger, text_input)
                     logger.info('data fetch complete')
-                    # values = ", ".join(f"'{value}'" for value in fetched_data.values())
-                    # result = f'({values})'
+                    values = ", ".join(f"'{value}'" for value in fetched_data.values())
+                    result = f'({values})'
 
-                    # company_name = fetched_data['company_name']
-                    # company_location = fetched_data['company_location']
-                    # number_of_employees = fetched_data['number_of_employees']
-                    # total_funding = fetched_data['total_funding']
-                    # number_of_investors = fetched_data['number_of_investors']
-                    # investors_name = fetched_data['investors_name']
-                    # founders_name = fetched_data['founders_name']
-                    # founding_year = fetched_data['founding_year']
-                    # news_corner = fetched_data['news_corner']
-                    # record_timestamp = fetched_data['record_timestamp']
+                    company_name = fetched_data['company_name']
+                    company_location = fetched_data['company_location']
+                    number_of_employees = fetched_data['number_of_employees']
+                    total_funding = fetched_data['total_funding']
+                    number_of_investors = fetched_data['number_of_investors']
+                    investors_name = fetched_data['investors_name']
+                    founders_name = fetched_data['founders_name']
+                    founding_year = fetched_data['founding_year']
+                    news_corner = fetched_data['news_corner']
+                    record_timestamp = fetched_data['record_timestamp']
 
-                    # sql = """INSERT INTO company_information VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
-                    # arg_tuple = (company_name, company_location, number_of_employees, total_funding, number_of_investors, investors_name, founders_name, founding_year, news_corner, record_timestamp)
+                    sql = """INSERT INTO company_information VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);"""
+                    arg_tuple = (company_name, company_location, number_of_employees, total_funding, number_of_investors, investors_name, founders_name, founding_year, news_corner, record_timestamp)
 
-                    # postgres_functions.execute_query(sql, arg_tuple)
+                    postgres_functions.execute_query(sql, arg_tuple)
                     st.success("Process completed!")
                     st.session_state = {}
                     st.rerun()
