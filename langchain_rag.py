@@ -127,7 +127,7 @@ def fetch_company_data(logger, input_url):
     logger.info(f'all_links : {all_links}')
     rag_chain = build_rag_chain(all_links)
 
-    question = '''This a document about a company website. What is the name of the company written on the 
+    question = '''This is a document about a company website. What is the name of the company written on the 
                   website? Tell me the name that is most frequently appearing on the website. 
                   Just write the name and do now write anything else'''
 
